@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Vehículos - CRUD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .status {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        input, select {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .vehicles-list {
+            margin-top: 30px;
+        }
+        
+        .vehicle-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        
+        .vehicle-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .vehicle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .vehicle-title {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 700;
+        }
+        
+        .vehicle-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .no-vehicles {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 API de Gestión de Vehículos</h1>
+        <p class="subtitle">Sistema CRUD completo con Java Spring Boot + MongoDB</p>
+        
+        <div class="status">
+            ✅ API funcionando correctamente en <strong>http://localhost:8080</strong>
+        </div>
+        
+        <div class="form-section">
+            <h2>➕ Agregar Nuevo Vehículo</h2>
+            <form id="vehicleForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="marca">Marca *</label>
+                        <input type="text" id="marca" required placeholder="Toyota">
+                    </div>
+                    <div class="form-group">
+                        <label for="modelo">Modelo *</label>
+                        <input type="text" id="modelo" required placeholder="Corolla">
+                    </div>
+                    <div class="form-group">
+                        <label for="anio">Año *</label>
+                        <input type="number" id="anio" required min="1900" max="2030" placeholder="2024">
+                    </div>
+                    <div class="form-group">
+                        <label for="color">Color *</label>
+                        <input type="text" id="color" required placeholder="Blanco">
+                    </div>
+                    <div class="form-group">
+                        <label for="placa">Placa *</label>
+                        <input type="text" id="placa" required placeholder="ABC123">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo">
+                            <option value="">Seleccionar</option>
+                            <option value="sedan">Sedán</option>
+                            <option value="suv">SUV</option>
+                            <option value="camioneta">Camioneta</option>
+                            <option value="deportivo">Deportivo</option>
+                            <option value="hatchback">Hatchback</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio</label>
+                        <input type="number" id="precio" step="0.01" placeholder="25000.00">
+                    </div>
+                </div>
+                <button type="submit">Guardar Vehículo</button>
+                <button type="button" class="btn-secondary" onclick="clearForm()" style="margin-left: 10px;">Limpiar</button>
+            </form>
+        </div>
+        
+        <div class="vehicles-list">
+            <h2>📋 Lista de Vehículos</h2>
+            <div id="vehiclesList" class="loading">Cargando vehículos...</div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8080/api/vehicles';
+        
+        // Cargar vehículos al iniciar
+        loadVehicles();
+        
+        // Manejar envío del formulario
+        document.getElementById('vehicleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const vehicle = {
+                marca: document.getElementById('marca').value,
+                modelo: document.getElementById('modelo').value,
+                anio: parseInt(document.getElementById('anio').value),
+                color: document.getElementById('color').value,
+                placa: document.getElementById('placa').value,
+                tipo: document.getElementById('tipo').value || null,
+                precio: document.getElementById('precio').value ? parseFloat(document.getElementById('precio').value) : null
+            };
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(vehicle)
+                });
+                
+                if (response.ok) {
+                    alert('✅ Vehículo agregado correctamente');
+                    clearForm();
+                    loadVehicles();
+                } else {
+                    alert('❌ Error al agregar el vehículo');
+                }
+            } catch (error) {
+                alert('❌ Error de conexión: ' + error.message);
+            }
+        });
+        
+        // Cargar todos los vehículos
+        async function loadVehicles() {
+            try {
+                const response = await fetch(API_URL);
+                const vehicles = await response.json();
+                
+                const container = document.getElementById('vehiclesList');
+                
+                if (vehicles.length === 0) {
+                    container.innerHTML = '<div class="no-vehicles">No hay vehículos registrados. ¡Agrega el primero!</div>';
+                    return;
+                }
+                
+                container.innerHTML = vehicles.map(vehicle => `
+                    <div class="vehicle-card">
+                        <div class="vehicle-header">
+                            <div class="vehicle-title">${vehicle.marca} ${vehicle.modelo}</div>
+                            <button class="btn-danger" onclick="deleteVehicle('${vehicle.id}')">Eliminar</button>
+                        </div>
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Año</span>
+                                <span class="detail-value">${vehicle.anio}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Color</span>
+                                <span class="detail-value">${vehicle.color}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Placa</span>
+                                <span class="detail-value">${vehicle.placa}</span>
+                            </div>
+                            ${vehicle.tipo ? `
+                            <div class="detail-item">
+                                <span class="detail-label">Tipo</span>
+                                <span class="detail-value">${vehicle.tipo}</span>
+                            </div>
+                            ` : ''}
+                            ${vehicle.precio ? `
+                            <div class="detail-item">
+                                <span class="detail-label">Precio</span>
+                                <span class="detail-value">$${vehicle.precio.toLocaleString()}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('vehiclesList').innerHTML = `
+                    <div class="error">
+                        ❌ Error al cargar los vehículos. Verifica que la API esté ejecutándose en http://localhost:8080
+                    </div>
+                `;
+            }
+        }
+        
+        // Eliminar vehículo
+        async function deleteVehicle(id) {
+            if (!confirm('¿Estás seguro de eliminar este vehículo?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert('✅ Vehículo eliminado correctamente');
+                    loadVehicles();
+                } else {
+                    alert('❌ Error al eliminar el vehículo');
+                }
+            } catch (error) {
+                alert('❌ Error de conexión: ' + error.message);
+            }
+        }
+        
+        // Limpiar formulario
+        function clearForm() {
+            document.getElementById('vehicleForm').reset();
+        }
+    </script>
+</body>
+</html>
