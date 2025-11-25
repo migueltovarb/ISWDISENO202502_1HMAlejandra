@@ -1,0 +1,385 @@
+{
+	"info": {
+		"_postman_id": "proyecto-elena-api-2025",
+		"name": "ProyectoElena API",
+		"description": "Colección completa de endpoints para el backend de ProyectoElena - Plataforma Cultural de Eventos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"health"
+							]
+						},
+						"description": "Verifica que el servidor esté funcionando correctamente"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de verificación de salud del sistema"
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registrar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@ejemplo.com\",\n  \"nombreUsuario\": \"usuario123\",\n  \"password\": \"password1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/registro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"registro"
+							]
+						},
+						"description": "Registra un nuevo usuario en el sistema. El password debe tener mínimo 8 caracteres."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de autenticación y registro de usuarios"
+		},
+		{
+			"name": "Eventos",
+			"item": [
+				{
+					"name": "Listar Eventos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/eventos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"eventos"
+							]
+						},
+						"description": "Obtiene la lista completa de todos los eventos disponibles"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Evento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"actorId\": \"{{usuarioId}}\",\n  \"nombreEvento\": \"Concierto de Rock\",\n  \"descripcion\": \"Un evento musical increíble\",\n  \"lugar\": \"Teatro Principal\",\n  \"fechaInicio\": \"2025-12-01T18:00:00Z\",\n  \"fechaFin\": \"2025-12-01T22:00:00Z\",\n  \"cupos\": 500,\n  \"categoriaId\": \"{{categoriaId}}\",\n  \"organizadoresIds\": [\"{{usuarioId}}\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/eventos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"eventos"
+							]
+						},
+						"description": "Crea un nuevo evento cultural. Requiere un usuario organizador válido."
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Evento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"actorId\": \"{{usuarioId}}\",\n  \"nombreEvento\": \"Concierto de Rock Actualizado\",\n  \"descripcion\": \"Descripción actualizada del evento\",\n  \"lugar\": \"Teatro Principal - Sala 2\",\n  \"fechaInicio\": \"2025-12-01T19:00:00Z\",\n  \"fechaFin\": \"2025-12-01T23:00:00Z\",\n  \"cupos\": 600,\n  \"categoriaId\": \"{{categoriaId}}\",\n  \"organizadoresIds\": [\"{{usuarioId}}\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/eventos/{{eventoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"eventos",
+								"{{eventoId}}"
+							]
+						},
+						"description": "Actualiza los datos de un evento existente"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Evento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/eventos/{{eventoId}}?actorId={{usuarioId}}&confirmar=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"eventos",
+								"{{eventoId}}"
+							],
+							"query": [
+								{
+									"key": "actorId",
+									"value": "{{usuarioId}}"
+								},
+								{
+									"key": "confirmar",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Elimina un evento del sistema. Requiere confirmación explícita."
+					},
+					"response": []
+				}
+			],
+			"description": "Gestión completa de eventos culturales"
+		},
+		{
+			"name": "Inscripciones",
+			"item": [
+				{
+					"name": "Inscribir Usuario a Evento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuarioId\": \"{{usuarioId}}\",\n  \"eventoId\": \"{{eventoId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/inscripciones",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"inscripciones"
+							]
+						},
+						"description": "Inscribe a un usuario en un evento específico. Verifica cupos disponibles."
+					},
+					"response": []
+				}
+			],
+			"description": "Gestión de inscripciones de usuarios a eventos"
+		},
+		{
+			"name": "Asistencias",
+			"item": [
+				{
+					"name": "Registrar Asistencia",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventoId\": \"{{eventoId}}\",\n  \"usuarioId\": \"{{usuarioId}}\",\n  \"actorId\": \"{{organizadorId}}\",\n  \"asistio\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/asistencias",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"asistencias"
+							]
+						},
+						"description": "Registra la asistencia de un usuario a un evento. Debe ser ejecutado por un organizador."
+					},
+					"response": []
+				}
+			],
+			"description": "Control de asistencia a eventos"
+		},
+		{
+			"name": "Certificados",
+			"item": [
+				{
+					"name": "Emitir Certificado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventoId\": \"{{eventoId}}\",\n  \"usuarioId\": \"{{usuarioId}}\",\n  \"actorId\": \"{{organizadorId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/certificados",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"certificados"
+							]
+						},
+						"description": "Emite un certificado de asistencia para un usuario que participó en un evento"
+					},
+					"response": []
+				}
+			],
+			"description": "Gestión de certificados de participación"
+		},
+		{
+			"name": "Pagos",
+			"item": [
+				{
+					"name": "Registrar Pago",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuarioId\": \"{{usuarioId}}\",\n  \"eventoId\": \"{{eventoId}}\",\n  \"monto\": 50000.00,\n  \"metodoPago\": \"TARJETA\",\n  \"comprobanteUrl\": \"https://ejemplo.com/comprobante.pdf\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pagos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pagos"
+							]
+						},
+						"description": "Registra un nuevo pago de inscripción. Métodos válidos: TARJETA, TRANSFERENCIA, EFECTIVO"
+					},
+					"response": []
+				},
+				{
+					"name": "Validar Pago",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"adminId\": \"{{adminId}}\",\n  \"aprobado\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pagos/{{pagoId}}/validar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pagos",
+								"{{pagoId}}",
+								"validar"
+							]
+						},
+						"description": "Valida o rechaza un pago registrado. Requiere permisos de administrador."
+					},
+					"response": []
+				}
+			],
+			"description": "Gestión de pagos e inscripciones a eventos"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "usuarioId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventoId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoriaId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "organizadorId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pagoId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

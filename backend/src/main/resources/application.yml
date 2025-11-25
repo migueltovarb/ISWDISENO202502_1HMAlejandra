@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: proyecto-diseno-backend
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb+srv://helenmoncayo42_db_user:VZaNYsdEI3kYS1Sv@plataformacultural.v6juafm.mongodb.net/?appName=PlataformaCultural}
+      database: ${MONGODB_DATABASE:eventplatform}
+      auto-index-creation: true
+server:
+  port: 8080
