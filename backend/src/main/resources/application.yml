@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: proyecto-diseno-backend
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/proyecto_diseno}
+      database: ${MONGODB_DATABASE:proyecto_diseno}
+      auto-index-creation: true
+server:
+  port: 8080
