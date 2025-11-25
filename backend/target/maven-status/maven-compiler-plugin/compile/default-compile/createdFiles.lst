@@ -1,0 +1,6 @@
+com\api\vehicles\VehiclesApiApplication.class
+com\api\vehicles\config\WebConfig.class
+com\api\vehicles\controller\VehicleController.class
+com\api\vehicles\model\Vehicle.class
+com\api\vehicles\repository\VehicleRepository.class
+com\api\vehicles\service\VehicleService.class

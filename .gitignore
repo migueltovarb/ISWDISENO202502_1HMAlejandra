@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Maven
 target/
 pom.xml.tag
@@ -69,3 +70,6 @@ replay_pid*
 *.bak
 *.swp
 *~.nib
+=======
+/bin/
+>>>>>>> 7469ce13eca3a068b5fe7189c3dcaf4e61568869
