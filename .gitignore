@@ -1,0 +1,29 @@
+# Compiled class files
+**/target/
+
+# IDE files (IntelliJ, Eclipse, VS Code)
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Maven wrapper and artifacts
+.mvn/
+**/mvnw
+**/mvnw.cmd
+
+# Build output from tools
+build/
+
+# Misc
+*.class
+
+# VS Code settings
+.vscode/
