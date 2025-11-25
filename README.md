@@ -1,7 +1,8 @@
 # 🎭 ProyectoElena - Plataforma Cultural de Eventos
 
 Backend desarrollado en Spring Boot para la gestión integral de eventos culturales, incluyendo inscripciones, pagos, asistencias y certificados.
-
+##VIDEO
+https://drive.google.com/file/d/1nmwmB7nKmACbl5aQETg1KMAa3h6Xb0JX/view?usp=drive_link
 ## 🚀 Tecnologías
 
 - **Java 17**
